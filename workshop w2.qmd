@@ -1,0 +1,123 @@
+---
+title: "Workshop W2"
+author: Dylan Hoang
+format: 
+  html: 
+    theme: cerulean
+  pdf: default
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+The `echo: false` will hide the output of the code chunk
+    
+`warning: false` will remove any warning in the output, but here it just does not show any output at all
+
+`eval: false` will not run code
+```{r}
+#| warning: false
+
+library(rmarkdown)
+library(knitr)
+library(tidyverse)
+library(readr)
+library(kableExtra)
+library(ggplot2)
+```
+
+## Introduction
+"In this tutorial we are looking at *Avian Influenza* cases detected globally since 1997" 
+
+Here is the link for the website: [US CDC](https://www.cdc.gov/bird-flu/php/avian-flu-summary/chart-epi-curve-ah5n1.html)
+
+## Reading Avian Influenza Data
+
+```{r Reading data}
+#| echo: true
+#| warning: false
+#| message: false
+dat <- read_csv("data/avian_influenza_numbers.csv")
+```
+
+```{r}
+head(dat, 10)
+```
+
+```{r}
+glimpse(dat)
+```
+
+```{r}
+str(dat)
+```
+> * This dataset has `r ncol(dat)` number of columns and `r nrow(dat)` number of rows.
+
+### Why is it important to know the dimension of your dataset?
+
+It is important to have a grasp into your dataset, giving you more understanding with what you are dealing with
+
+### What are the variable names in the dataset?
+
+ [1] "Range"          "Month"          "Vietnam"        "Turkey"         "Thailand"       "Iraq"          
+ [7] "Indonesia"      "Egypt"          "Djibouti"       "China"          "Cambodia"       "Nigeria"       
+[13] "Azerbaijan"     "Pakistan"       "Myanmar"        "Laos"           "Bangladesh"     "Canada"        
+[19] "India"          "Nepal"          "United Kingdom" "Spain"          "United States"  "Ecuador"       
+[25] "Chile"          "Australia"     
+
+- range: recorded time range year-year
+- month: one month snapshot inside the range
+
+# Exercise 4
+1. 
+```{r}
+      
+```
+2. 
+- *Month*: character
+- *Australia*: number
+- *Egypt*: number
+- *United States*: number
+
+> The type for "Month" is not correct, it should be in Datetime/Date
+
+
+```{r}
+#| tbl-cap: "Summary of number of cases of Avian Influenza"
+kable(caption = "Summary" data_cleaned)
+```
+
+```{r}
+library(ggplot2)
+data_cleaned |>
+  ggplot(aes(x = Egypt)) +
+  geom_histogram()
+
+```
+
+```{r}
+data_cleaned |>
+  pivot_longer(Australia:`United States`) |> 
+  ggplot(aes(x = value, fill = name)) + 
+  geom_histogram(binwidth = 5, position = 'dodge')   # This does the exact same thing as geom_col()
+```
+
+
+
+```{r}
+data_cleaned |>
+  pivot_longer(Australia:`United States`) |> 
+  ggplot(aes(x = Month, y = value, fill = name)) + 
+  geom_bar(stat = "identity") +  # This does the exact same thing as geom_col() + 
+  facet_wrap(~name)
+  labs(x = "Month", y = NULL)
+```
+
+```{r}
+
+```
+
